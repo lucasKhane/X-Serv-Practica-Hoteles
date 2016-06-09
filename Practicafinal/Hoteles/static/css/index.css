@@ -1,0 +1,37 @@
+body {
+    background: #ADD8E6;
+}
+
+#contenedor, #banner, #auth-content, #auth-options, #auth-formularios, #optionsmenu, #pie_de_pagina {
+    border: 2px solid #777;
+}
+
+#contenedor {
+  width: 95%;
+  margin: 0 auto;
+}
+
+#banner, #auth-content {
+  margin-top: 1.4em;
+}
+
+#banner {
+  float: left;
+  width: 50%;
+}
+
+img.banner{
+   max-width:100%;
+   max-height:100%;
+   border: 5px solid #333300;
+   border-radius: 0.3em;
+}
+
+#auth-content{
+  float: right;
+  width: 30%;
+}
+
+#optionsmenu, #pie_de_pagina{
+  clear: right;
+}

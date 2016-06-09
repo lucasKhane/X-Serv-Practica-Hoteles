@@ -1,0 +1,8 @@
+body {
+    background: #ADD8E6;
+}
+
+#contenedor, #banner, #auth, #optionsmenu, #pie_de_pagina {
+    border: 2px solid #777;
+    background: #ADD8E6;
+}
