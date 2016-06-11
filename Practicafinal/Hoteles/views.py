@@ -54,3 +54,6 @@ def register(request):
 
 def registration_complete(request):
      return render_to_response('registration/registration_complete.html')
+
+def XMLlinks(request):
+    return render_to_response('XMLlinks.html')

@@ -2,7 +2,7 @@ body {
     background: #ADD8E6;
 }
 
-#contenedor, #banner, #auth-content, #auth-options, #auth-formularios, #optionsmenu, #pie_de_pagina {
+#contenedor, #banner, #auth-content, #auth-options, #auth-formularios, #menu {
     border: 2px solid #777;
 }
 
@@ -11,7 +11,7 @@ body {
   margin: 0 auto;
 }
 
-#banner, #auth-content {
+#banner{
   margin-top: 1.4em;
 }
 
@@ -30,8 +30,47 @@ img.banner{
 #auth-content{
   float: right;
   width: 30%;
+  margin-top: 5em;
 }
 
-#optionsmenu, #pie_de_pagina{
-  clear: right;
+.button {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    width: 6em;
+    margin: 0.3em;
+    border-radius: 0.3em;
+    background: #C0C0C0;
+    border: 2.5px solid #333300;
+}
+
+.button:hover {
+    background-color: orange;
+}
+
+#menu {
+    clear: left;
+    position: relative;
+    top: 1.4em;
+}
+
+ul#menu {
+    padding: 0;
+}
+
+ul#menu li {
+    display: inline;
+}
+
+ul#menu li a {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 30px 5px 30px 5px;
+}
+
+ul#menu li a:hover {
+    background-color: orange;
 }

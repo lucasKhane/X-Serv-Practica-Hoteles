@@ -4,6 +4,9 @@
 <head>
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script language="JavaScript" type="text/javascript" src="{% static 'jquery/jquery.js' %}"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -14,23 +17,29 @@
         </div>
         <div id=auth-content>
       			<div id="auth-options">
-                <a href="/accounts/register">register</a>
-                <a href="/accounts/login">login</a>
-                <a href="/accounts/logout">logout</a>
+                <a href="/accounts/register" class="button">Registrate</a>
+                <a href="/accounts/login" class="button">Login</a>
+                <a href="/accounts/logout" class="button">Logout</a>
             </div>
             <div id="auth-formularios">
                 {% block content %}
                 {% endblock %}
             </div>
         </div>
-  			<div id="optionsmenu">
-            <a href="/accounts/profile">Pagina de usuario</a>
-            <a href="alojamientos">Alojamientos disponibles</a>
-            <a href="about">About</a>
-            Canal XML - No me acuerdo muy bien que era esto
-  			</div>
-  			<div id="pie_de_pagina">
-            Un footer quiza
+  			<ul id="menu">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/accounts/profile">Pagina de usuario</a></li>
+            <li><a href="alojamientos">Alojamientos disponibles</a></li>
+            <li><a href="about">About</a></li>
+  			</ul>
+  			<div class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container">
+                <p class="navbar-text pull-left">© 2016 - Site Built By Daniel Rodríguez.</p>
+                <p class="navbar-text pull-left">“Esta aplicación utiliza datos del portal de datos abiertos de la ciudad de Madrid”</p>
+
+                <a href="XMLlinks" class="navbar-btn btn-danger btn pull-right">
+                <span class="glyphicon glyphicon-pushpin"></span>  See information XML links</a>
+            </div>
         </div>
     </div>
 </body>

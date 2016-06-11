@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^accounts/loggedin/$', 'Hoteles.views.loggedin', name='loggedin'),
     url(r'^accounts/register/$', 'Hoteles.views.register', name='register'),
     url(r'^accounts/register/complete/$', 'Hoteles.views.registration_complete', name='registration_complete'),
+    url(r'^XMLlinks$', 'Hoteles.views.XMLlinks', name='XMLlinks'),
 ]
