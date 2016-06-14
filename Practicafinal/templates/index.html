@@ -11,27 +11,48 @@
 
 <body>
 		<div id="contenedor">
+
         <div id="banner">
             {% load staticfiles %}
             <img class="banner" src="{% static "images/cloud_banner.jpg" %}" alt="banner_image"/>
         </div>
+
         <div id=auth-content>
       			<div id="auth-options">
-                <a href="/accounts/register" class="button">Registrate</a>
-                <a href="/accounts/login" class="button">Login</a>
-                <a href="/accounts/logout" class="button">Logout</a>
+                {% if user %}
+                    <a href="/accounts/logout" class="button">Logout</a>
+                {% else %}
+                    <a href="/accounts/register" class="button">Registrate</a>
+                    <a href="/accounts/login" class="button">Login</a>
+                {% endif %}
             </div>
             <div id="auth-formularios">
                 {% block content %}
                 {% endblock %}
             </div>
         </div>
+
   			<ul id="menu">
             <li><a href="/">Inicio</a></li>
-            <li><a href="/accounts/profile">Pagina de usuario</a></li>
+            {% if user %}
+                <li><a href="{{ user }}">Pagina de usuario</a></li>
+            {% else %}
+                <li><a href="/login">Pagina de usuario</a></li>
+            {% endif %}
             <li><a href="alojamientos">Alojamientos disponibles</a></li>
             <li><a href="about">About</a></li>
   			</ul>
+
+        <div id=leftcontainer>
+            {% block leftcontent %}
+            {% endblock %}
+        </div>
+
+        <div id=middlecontainer>
+            {% block midcontent %}
+            {% endblock %}
+        </div>
+
   			<div class="navbar navbar-default navbar-fixed-bottom">
             <div class="container">
                 <p class="navbar-text pull-left">© 2016 - Site Built By Daniel Rodríguez.</p>
@@ -41,6 +62,7 @@
                 <span class="glyphicon glyphicon-pushpin"></span>  See information XML links</a>
             </div>
         </div>
+
     </div>
 </body>
 </html>

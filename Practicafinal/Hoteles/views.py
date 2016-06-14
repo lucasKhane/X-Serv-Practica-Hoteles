@@ -8,31 +8,52 @@ from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.views.decorators.csrf import csrf_exempt
+#import parsehotel
 
 # Create your views here.
 def principal(request):
     if request.method == "GET":
-        return HttpResponse(get_template('index.html').render())
+        username = None
+        if request.user.is_authenticated():
+            username = request.user.username
+        context = {'user': username}
+        return HttpResponse(get_template('index.html').render(context))
     else:
         return HttpResponse(get_template('error404NotFound.html').render())
 
-def usuario(request):
-    return HttpResponse("Index de la aplicacion")
+def reloadhotel(request):
+    return HttpResponse("ReloadHotel")
 
 def alojamientos(request):
-    return HttpResponse("Index de la aplicacion")
+    return HttpResponse("alojamientos")
 
 def elalojamiento(request):
-    return HttpResponse("Index de la aplicacion")
-
-def usuario_XML(request):
-    return HttpResponse("Index de la aplicacion")
+    return HttpResponse("elalojamiento")
 
 def about(request):
-    return HttpResponse("Index de la aplicacion")
+    if request.method == "GET":
+        username = None
+        if request.user.is_authenticated():
+            username = request.user.username
+        context = {'user': username}
+        return HttpResponse(get_template('about.html').render(context))
+    else:
+        return HttpResponse(get_template('error404NotFound.html').render())
 
-def profile(request):
-    return HttpResponse("Esta mierda va funcionando")
+def user_profile(request, usuario):
+    if request.method == "GET":
+        username = None
+        if request.user.is_authenticated():
+            username = request.user.username
+            context = {'user': username}
+            return HttpResponse(get_template('user_profile.html').render(context))
+        else:
+            return HttpResponseRedirect("accounts/login/")
+    else:
+        return HttpResponse(get_template('error404NotFound.html').render())
+
+def user_XML(request, usuario):
+    return HttpResponse("user_XML")
 
 def loggedin(request):
     return render_to_response('registration/loggedin.html',
@@ -43,6 +64,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
+            print "Esta autenticado el usuario tras registrarse?: ", request.user.username
             return HttpResponseRedirect('/accounts/register/complete')
     else:
         form = UserCreationForm()

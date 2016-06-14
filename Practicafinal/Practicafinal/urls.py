@@ -24,13 +24,15 @@ urlpatterns = [
     url(r'^alojamientos/(\d+)', 'Hoteles.views.elalojamiento'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^about$', 'Hoteles.views.about'),
-    #url(r'^(.*)/xml$', 'Hoteles.views.usuario_XML'),
+
     #url(r'^(.*)$', 'Hoteles.views.usuario'),
-    url(r'^accounts/profile/$', 'Hoteles.views.profile', name='profile'),
+
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name='logout'),
     url(r'^accounts/loggedin/$', 'Hoteles.views.loggedin', name='loggedin'),
     url(r'^accounts/register/$', 'Hoteles.views.register', name='register'),
     url(r'^accounts/register/complete/$', 'Hoteles.views.registration_complete', name='registration_complete'),
     url(r'^XMLlinks$', 'Hoteles.views.XMLlinks', name='XMLlinks'),
+    url(r'^(.*)$', 'Hoteles.views.user_profile', name='profile'),
+    #url(r'^(.*)/xml$', 'Hoteles.views.user_XML', name='user_XML'),
 ]
