@@ -8,7 +8,14 @@ from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.views.decorators.csrf import csrf_exempt
-#import parsehotel
+
+from models import Hotel
+
+from xml.sax import make_parser
+from xml.sax.handler import ContentHandler
+from loadit import myContentHandler
+
+import urllib2
 
 # Create your views here.
 def principal(request):
@@ -23,9 +30,6 @@ def principal(request):
 
 def reloadhotel(request):
     return HttpResponse("ReloadHotel")
-
-def alojamientos(request):
-    return HttpResponse("alojamientos")
 
 def elalojamiento(request):
     return HttpResponse("elalojamiento")
@@ -47,10 +51,40 @@ def user_profile(request, usuario):
             username = request.user.username
             context = {'user': username}
             return HttpResponse(get_template('user_profile.html').render(context))
-        else:
-            return HttpResponseRedirect("accounts/login/")
+        #else:
+            #return HttpResponseRedirect("accounts/login/")
     else:
         return HttpResponse(get_template('error404NotFound.html').render())
+
+def rechargelang(request):
+    print ("Refresing...")
+    #Crea un nuevo objeto parser y lo devuelve
+    theParser = make_parser()
+    theHandler = myContentHandler()
+    theParser.setContentHandler(theHandler)
+    fil = urllib2.urlopen( 'http://cursosweb.github.io/etc/alojamientos_es.xml')
+    theParser.parse(fil)
+    return HttpResponseRedirect("alojamientos")
+
+def alojamientos(request):
+    listaHoteles = Hotel.objects.all()
+    print listaHoteles[0].nombreHotel
+    print listaHoteles[0].email
+    print listaHoteles[0].telefono
+    print listaHoteles[0].descripcion
+    print listaHoteles[0].webUrl
+    print listaHoteles[0].direccion
+    print listaHoteles[0].latitude
+    print listaHoteles[0].longitude
+    print listaHoteles[0].imageUrl
+    print listaHoteles[0].categoria
+    print listaHoteles[0].estrellas
+    context = {'listaHoteles': listaHoteles, 'username': request.user.username}
+
+    return render_to_response('alojamientos.html', context, context_instance = RequestContext(request))
+
+def elalojamiento(request, id):
+    return HttpResponse("elalojamiento")
 
 def user_XML(request, usuario):
     return HttpResponse("user_XML")

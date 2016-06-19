@@ -3,9 +3,9 @@
 
 {% block leftcontent %}
     <h4>Pulsa para recargar la informacón en el idioma actual seleccionado</h4>
-     <button type="button">Recharge!</button> 
+    <button type="submit" class="btn btn-link" onclick="window.location.href='rechargelang'">¡Refresh!</button>
 {% endblock %}
 
 {% block midcontent %}
-    <h1>Welcome {{username}}</h1>
+    <h1>Welcome {{ user }}</h1>
 {% endblock %}
