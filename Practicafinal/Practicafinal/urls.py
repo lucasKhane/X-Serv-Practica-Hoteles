@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^accounts/register/complete/$', 'Hoteles.views.registration_complete', name='registration_complete'),
     url(r'^XMLlinks$', 'Hoteles.views.XMLlinks', name='XMLlinks'),
 
-    url(r'^rechargelang$', 'Hoteles.views.rechargelang', name='rechargelang'),
+    url(r'^rechargelang/$', 'Hoteles.views.rechargelang', name='rechargelang'),
     url(r'^(.*)$', 'Hoteles.views.user_profile', name='profile'),
     url(r'^(.*)/xml$', 'Hoteles.views.user_XML', name='user_XML'),
 ]

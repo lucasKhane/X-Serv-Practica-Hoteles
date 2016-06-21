@@ -18,6 +18,18 @@ from loadit import myContentHandler
 
 import urllib2
 
+#template
+#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+#<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+#<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+
+#<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-3.3.6-dist/css/bootstrap.min.css' %}" />
+#<script language="JavaScript" type="text/javascript" src="{% static 'bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script>
+#<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-multiselect/bootstrap-multiselect.css' %}" />
+#<script language="JavaScript" type="text/javascript" src="{% static 'bootstrap-multiselect/bootstrap-multiselect.js' %}"></script>
+
+
 # Create your views here.
 def principal(request):
     if request.method == "GET":
@@ -31,9 +43,6 @@ def principal(request):
 
 def reloadhotel(request):
     return HttpResponse("ReloadHotel")
-
-def elalojamiento(request):
-    return HttpResponse("elalojamiento")
 
 def about(request):
     if request.method == "GET":
@@ -72,17 +81,6 @@ def alojamientos(request):
     if request.method == 'GET':
         listaHoteles = Hotel.objects.all()
         numHoteles = len(listaHoteles)
-        print listaHoteles[0].nombreHotel
-        print listaHoteles[0].email
-        print listaHoteles[0].telefono
-        print listaHoteles[0].descripcion
-        print listaHoteles[0].webUrl
-        print listaHoteles[0].direccion
-        print listaHoteles[0].latitude
-        print listaHoteles[0].longitude
-        print listaHoteles[0].imageUrl
-        print listaHoteles[0].categoria
-        print listaHoteles[0].estrellas
         context = {'listaHoteles': listaHoteles, 'numHoteles': numHoteles}
         return render_to_response('alojamientos.html', context, context_instance = RequestContext(request))
 
@@ -101,7 +99,36 @@ def alojamientos(request):
         return render_to_response('alojamientos.html', context, context_instance = RequestContext(request))
 
 def elalojamiento(request, id):
-    return HttpResponse("elalojamiento")
+    if request.method == 'GET':
+        thatHotel = Hotel.objects.all().filter(id=id)
+        arrayNumFotos = range(1,thatHotel[0].imageNum)
+        auxStrFotos = str(thatHotel[0].imageUrls)
+        auxStrFotos = auxStrFotos.replace("[","")
+        auxStrFotos = auxStrFotos.replace("]","")
+        auxStrFotos = auxStrFotos.replace("'","")
+        auxStrFotos = auxStrFotos.strip()
+        arrayFotos = auxStrFotos.split(",")
+        
+        for i in range(len(arrayFotos)):
+            arrayFotos[i]= arrayFotos[i].replace("u","",1)
+        firstFoto = arrayFotos.pop(0)
+
+        context = {'thatHotel': thatHotel[0], 'arrayNumFotos': arrayNumFotos, 'firstFoto': firstFoto, 'arrayFotos': arrayFotos}
+        return render_to_response('elalojamiento.html', context, context_instance = RequestContext(request))
+
+    elif request.method == 'POST':
+        listaOpcionesFiltro = request.POST.getlist("multiple")
+        listaHoteles = Hotel.objects.all()
+        listaFiltrado = Hotel.objects.all().filter(estrellas="Initialize var")
+        for i in range(len(listaOpcionesFiltro)):
+            if  listaOpcionesFiltro[i].find("estrella")!= -1:
+                listaFiltrado = listaFiltrado | listaHoteles.filter(estrellas=listaOpcionesFiltro[i])
+            else:
+                listaFiltrado = listaFiltrado | listaHoteles.filter(categoria=listaOpcionesFiltro[i])
+        numHoteles = len(listaFiltrado)
+
+        context = {'listaHoteles': listaFiltrado, 'numHoteles': numHoteles}
+        return render_to_response('alojamiento.html', context, context_instance = RequestContext(request))
 
 def user_XML(request, usuario):
     return HttpResponse("user_XML")
@@ -122,7 +149,6 @@ def register(request):
     token = {}
     token.update(csrf(request))
     token['form'] = form
-
     return render_to_response('registration/registration_form.html', token)
 
 def registration_complete(request):

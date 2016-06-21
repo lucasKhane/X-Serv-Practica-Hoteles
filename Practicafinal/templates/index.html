@@ -5,12 +5,13 @@
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'jquery/jquery-ui.css' %}" />
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script language="JavaScript" type="text/javascript" src="{% static 'jquery/jquery.js' %}"></script>
     <script language="JavaScript" type="text/javascript" src="{% static 'jquery/jquery-ui.js' %}"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+
 </head>
 
 <body>
@@ -24,10 +25,10 @@
         <div id=auth-content>
       			<div id="auth-options">
                 {% if user %}
-                    <a href="/accounts/logout" class="button">Logout</a>
+                    <a href="/accounts/logout/" class="button">Logout</a>
                 {% else %}
-                    <a href="/accounts/register" class="button">Registrate</a>
-                    <a href="/accounts/login" class="button">Login</a>
+                    <a href="/accounts/register/" class="button">Registrate</a>
+                    <a href="/accounts/login/" class="button">Login</a>
                 {% endif %}
             </div>
             <div id="auth-formularios">
@@ -41,7 +42,7 @@
             {% if user %}
                 <li><a href="{{ user }}">Pagina de usuario</a></li>
             {% else %}
-                <li><a href="/login">Pagina de usuario</a></li>
+                <li><a href="/login/">Pagina de usuario</a></li>
             {% endif %}
             <li><a href="alojamientos">Alojamientos disponibles</a></li>
             <li><a href="about">About</a></li>

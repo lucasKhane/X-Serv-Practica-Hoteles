@@ -36,7 +36,7 @@
 {% block midcontent %}
 
     <h3 style="text-decoration: underline; margin-bottom: 1em">Listado Hoteles disponibles ({{numHoteles}})</h3>
-    {% if  numHoteles != 0%}
+    {% if  numHoteles != 0 %}
         <ul style="width: auto; height: 40em; overflow-x: hidden; overflow-y: scroll">
             {% for elemento in listaHoteles %}
                 <li><a href="/alojamientos/{{ elemento.id }}">{{ elemento.nombreHotel }}</a></li>

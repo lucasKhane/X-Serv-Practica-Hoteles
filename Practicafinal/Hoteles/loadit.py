@@ -23,7 +23,8 @@ class myContentHandler(ContentHandler):
         self.direccion = ""
         self.latitude = ""
         self.longitude = ""
-        self.imageUrl = ""
+        self.imageNum = 0
+        self.imageUrls = []
         #categoria y estrellas
         self.tipo = ""
 
@@ -39,7 +40,7 @@ class myContentHandler(ContentHandler):
         self.tag = name
 
         if name == 'basicData':
-            self.record = Hotel(nombreHotel="",email="",telefono="", descripcion="",webUrl="",direccion="",latitude="",longitude="",imageUrl="",categoria="",estrellas="")
+            self.record = Hotel(nombreHotel="",email="",telefono="", descripcion="",webUrl="",direccion="",latitude="",longitude="",imageNum=0,imageUrls=[],categoria="",estrellas="")
 
         if name == "item":
             if attrs['name'] == "Categoria":
@@ -87,17 +88,19 @@ class myContentHandler(ContentHandler):
             self.record.save()
 
         if self.tag == 'url' and self.tiene_imagenes:
-            self.record.imageUrl = self.imageUrl
+            #print "contador: ", self.contador, self.imageUrls
+            self.record.imageUrls.append(self.imageUrls)
+            self.record.imageNum = self.record.imageNum + 1
             self.record.save()
 
         if self.tag == 'item' and self.tiene_categoria:
-            print "JOIN TO TIENE CATEGORIA"
+            #print "JOIN TO TIENE CATEGORIA"
             self.record.categoria = self.tipo
             self.record.save()
             self.tiene_categoria = False
 
         if self.tag == 'item' and self.tiene_estrellas:
-            print "JOIN TO TIENE ESTRELLAS"
+            #print "JOIN TO TIENE ESTRELLAS"
             self.record.estrellas = self.tipo
             self.record.save()
             self.tiene_estrellas = False
@@ -134,7 +137,7 @@ class myContentHandler(ContentHandler):
             self.longitude = chars
 
         if self.tag == 'url':
-            self.imageUrl = chars
+            self.imageUrls = chars
 
         #categoria y estrellas
         if self.tag == 'item':
