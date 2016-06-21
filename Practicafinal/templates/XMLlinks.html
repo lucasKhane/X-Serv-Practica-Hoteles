@@ -1,12 +1,28 @@
-Descripcion:
-http://bit.ly/1T24Zsq
-Fichero XML con los datos (en espanol):
-http://www.esmadrid.com/opendata/alojamientos_v1_es.xml
-http://cursosweb.github.io/etc/alojamientos_es.xml
-Fichero XML con los datos (en ingles):
-http://www.esmadrid.com/opendata/alojamientos_v1_en.xml
-http://cursosweb.github.io/etc/alojamientos_en.xml
-Fichero XML con los datos (en frances):
-http://www.esmadrid.com/opendata/alojamientos_v1_fr.xml
-http://cursosweb.github.io/etc/alojamientos_fr.xml
-Hay ficheros XML con los datos en otros idiomas
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
+</head>
+
+<body>
+    <button type="submit" class="btn btn-link" onclick="window.location.href='index.html'">Volver a la página</button>
+    <h5>Esta página coge sus datos relativos a la información de los hoteles de las siguientes direcciones</h5>
+    <ul>Descripcion:
+        <li><a href="http://bit.ly/1T24Zsq">http://bit.ly/1T24Zsq</a></li>
+    </ul>
+    <ul>Fichero XML con los datos (en espanol):
+        <li><a href="http://www.esmadrid.com/opendata/alojamientos_v1_es.xml">http://www.esmadrid.com/opendata/alojamientos_v1_es.xml</a></li>
+        <li><a href="http://cursosweb.github.io/etc/alojamientos_es.xml">http://cursosweb.github.io/etc/alojamientos_es.xml</a></li>
+    </ul>
+    <ul>Fichero XML con los datos (en ingles):
+        <li><a href="http://www.esmadrid.com/opendata/alojamientos_v1_en.xml">http://www.esmadrid.com/opendata/alojamientos_v1_en.xml</a></li>
+        <li><a href="http://cursosweb.github.io/etc/alojamientos_en.xml">http://cursosweb.github.io/etc/alojamientos_en.xml</a></li>
+    </ul>
+    <ul>Fichero XML con los datos (en frances):
+        <li><a href="http://www.esmadrid.com/opendata/alojamientos_v1_fr.xml">http://www.esmadrid.com/opendata/alojamientos_v1_fr.xml</a></li>
+        <li><a href="http://cursosweb.github.io/etc/alojamientos_fr.xml">http://cursosweb.github.io/etc/alojamientos_fr.xml</a></li>
+    </ul>
+    <h5>Hay ficheros XML con los datos en otros idiomas</h5>
+</body>
+</html>

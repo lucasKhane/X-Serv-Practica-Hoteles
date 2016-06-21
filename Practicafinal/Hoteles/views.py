@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.views.decorators.csrf import csrf_exempt
+from itertools import chain
 
 from models import Hotel
 
@@ -51,8 +52,9 @@ def user_profile(request, usuario):
             username = request.user.username
             context = {'user': username}
             return HttpResponse(get_template('user_profile.html').render(context))
-        #else:
-            #return HttpResponseRedirect("accounts/login/")
+        else:
+            #CAMBIAR
+            return HttpResponseRedirect("/")
     else:
         return HttpResponse(get_template('error404NotFound.html').render())
 
@@ -67,21 +69,36 @@ def rechargelang(request):
     return HttpResponseRedirect("alojamientos")
 
 def alojamientos(request):
-    listaHoteles = Hotel.objects.all()
-    print listaHoteles[0].nombreHotel
-    print listaHoteles[0].email
-    print listaHoteles[0].telefono
-    print listaHoteles[0].descripcion
-    print listaHoteles[0].webUrl
-    print listaHoteles[0].direccion
-    print listaHoteles[0].latitude
-    print listaHoteles[0].longitude
-    print listaHoteles[0].imageUrl
-    print listaHoteles[0].categoria
-    print listaHoteles[0].estrellas
-    context = {'listaHoteles': listaHoteles, 'username': request.user.username}
+    if request.method == 'GET':
+        listaHoteles = Hotel.objects.all()
+        numHoteles = len(listaHoteles)
+        print listaHoteles[0].nombreHotel
+        print listaHoteles[0].email
+        print listaHoteles[0].telefono
+        print listaHoteles[0].descripcion
+        print listaHoteles[0].webUrl
+        print listaHoteles[0].direccion
+        print listaHoteles[0].latitude
+        print listaHoteles[0].longitude
+        print listaHoteles[0].imageUrl
+        print listaHoteles[0].categoria
+        print listaHoteles[0].estrellas
+        context = {'listaHoteles': listaHoteles, 'numHoteles': numHoteles}
+        return render_to_response('alojamientos.html', context, context_instance = RequestContext(request))
 
-    return render_to_response('alojamientos.html', context, context_instance = RequestContext(request))
+    elif request.method == 'POST':
+        listaOpcionesFiltro = request.POST.getlist("multiple")
+        listaHoteles = Hotel.objects.all()
+        listaFiltrado = Hotel.objects.all().filter(estrellas="Initialize var")
+        for i in range(len(listaOpcionesFiltro)):
+            if  listaOpcionesFiltro[i].find("estrella")!= -1:
+                listaFiltrado = listaFiltrado | listaHoteles.filter(estrellas=listaOpcionesFiltro[i])
+            else:
+                listaFiltrado = listaFiltrado | listaHoteles.filter(categoria=listaOpcionesFiltro[i])
+        numHoteles = len(listaFiltrado)
+
+        context = {'listaHoteles': listaFiltrado, 'numHoteles': numHoteles}
+        return render_to_response('alojamientos.html', context, context_instance = RequestContext(request))
 
 def elalojamiento(request, id):
     return HttpResponse("elalojamiento")

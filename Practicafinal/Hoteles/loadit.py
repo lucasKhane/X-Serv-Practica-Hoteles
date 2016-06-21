@@ -7,7 +7,7 @@ from xml.sax.handler import ContentHandler
 
 class myContentHandler(ContentHandler):
     def __init__(self):
-        print "In __init__ on myContentHandler"
+        #print "In __init__ on myContentHandler"
         self.contador = 0
         self.record = None;
 
@@ -33,7 +33,7 @@ class myContentHandler(ContentHandler):
         self.tiene_estrellas = False
 
     def startElement (self, name, attrs):
-        print "In startElement on myContentHandler"
+        #print "In startElement on myContentHandler"
         self.contador = self.contador + 1
         print "Numero Hotel: ", self.contador
         self.tag = name
@@ -43,7 +43,7 @@ class myContentHandler(ContentHandler):
 
         if name == "item":
             if attrs['name'] == "Categoria":
-                self.tiene_categoria == True;
+                self.tiene_categoria = True;
             if attrs['name'] == "SubCategoria":
                 self.tiene_estrellas = True;
 
@@ -52,7 +52,7 @@ class myContentHandler(ContentHandler):
                 self.tiene_imagenes = True
 
     def endElement (self, name):
-        print "In endElement on myContentHandler"
+        #print "In endElement on myContentHandler"
 
         if self.tag == 'title':
             self.record.nombreHotel = self.nombreHotel
@@ -90,20 +90,24 @@ class myContentHandler(ContentHandler):
             self.record.imageUrl = self.imageUrl
             self.record.save()
 
-        if self.tag == 'item' and self.tiene_estrellas:
-            self.record.estrellas = self.tipo
-            self.record.save()
-            self.tiene_estrellas = False
-
         if self.tag == 'item' and self.tiene_categoria:
+            print "JOIN TO TIENE CATEGORIA"
             self.record.categoria = self.tipo
             self.record.save()
             self.tiene_categoria = False
 
+        if self.tag == 'item' and self.tiene_estrellas:
+            print "JOIN TO TIENE ESTRELLAS"
+            self.record.estrellas = self.tipo
+            self.record.save()
+            self.tiene_estrellas = False
+
+
+
         self.tag = ""
 
     def characters (self, chars):
-        print "In characters on myContentHandler"
+        #print "In characters on myContentHandler"
 
         if self.tag == 'title':
             self.nombreHotel = chars

@@ -1,12 +1,48 @@
 {% extends "index.html" %}
-{% block title %}Pagina personal de usuar{% endblock %}
+
+{% block leftcontent %}
+    <h4>Aplicar filtro</h4>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <select multiple="multiple" name="multiple" id="multiple" size="6">
+            <optgroup label="Categoria">
+                <option value="Hoteles">Hoteles</option>
+                <option value="Hostales">Hostales</option>
+                <option value="Albergues">Albergues</option>
+                <option value="Apartahoteles">Apartahoteles</option>
+                <option value="Pensiones">Pensiones</option>
+                <option value="Residencias universitarias">Residencias universitarias</option>
+            </optgroup>
+            <optgroup label="Subcategoria">
+                <option value="1 estrella">1 estrella</option>
+                <option value="2 estrellas">2 estrellas</option>
+                <option value="3 estrellas">3 estrellas</option>
+                <option value="4 estrellas">4 estrellas</option>
+                <option value="5 estrellas">5 estrellas</option>
+            </optgroup>
+        </select>
+        <input class"submitbutton" type="submit" value="¡Filtrar!">
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $("select").multiselect({
+
+            });
+        });
+    </script>
+{% endblock %}
 
 {% block midcontent %}
-    <h3 style="text-decoration: underline; margin-bottom: 1em">Listado Hoteles disponibles</h3>
 
-    <ul style="width: auto; height: 40em; overflow-x: hidden; overflow-y: scroll">
-        {% for elemento in listaHoteles %}
-            <li><a href="/alojamientos/{{ elemento.id }}">{{ elemento.nombreHotel }}</a></li>
-        {% endfor %}
-    </ul>
-{% endblock %}s
+    <h3 style="text-decoration: underline; margin-bottom: 1em">Listado Hoteles disponibles ({{numHoteles}})</h3>
+    {% if  numHoteles != 0%}
+        <ul style="width: auto; height: 40em; overflow-x: hidden; overflow-y: scroll">
+            {% for elemento in listaHoteles %}
+                <li><a href="/alojamientos/{{ elemento.id }}">{{ elemento.nombreHotel }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h4>No hay hoteles disponibles</h4>
+    {% endif %}
+{% endblock %}
