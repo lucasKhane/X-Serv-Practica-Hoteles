@@ -1,6 +1,35 @@
 {% extends "index.html" %}
 
+{% block auth-options %}
+    <div id="auth-options">
+        {% if user %}
+            <a href="/accounts/logout/" class="button">Logout</a>
+        {% else %}
+            <a href="/accounts/register/" class="button">Registrate</a>
+            <a href="/accounts/login/" class="button">Login</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block userPageLabel %}
+    {% if user %}
+        <li><a href="/{{ user }}">Pagina de usuario</a></li>
+    {% endif %}
+{% endblock %}
+
 {% block leftcontent %}
+    <style>
+        body{
+            background-color: {{ personalPage.css.colordefondo }};
+            font-size: {{ personalPage.css.tamanioletra }}
+        }
+        #middlecontainer, #leftcontainer, a .button{
+            border: {{ personalPage.css.grosormarcos }} solid {{ personalPage.css.colormarcos }};
+        }
+        #rightcontainer{
+            border: 0;
+        }
+    </style>
     <h4>Aplicar filtro</h4>
     <form action="" method="POST">
         {% csrf_token %}

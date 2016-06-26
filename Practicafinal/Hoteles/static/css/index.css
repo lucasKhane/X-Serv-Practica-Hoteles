@@ -1,36 +1,36 @@
 body {
-    background: #ccffff;
+    background-color: #e6ffff;
 }
 
-#contenedor, #banner, #auth-content, #auth-options, #auth-formularios, #menu, #leftcontainer, #middlecontainer, #rightcontainer{
+#auth-content, #auth-formularios{
     border: 2px solid #777;
 }
 
 #contenedor {
-  width: 95%;
-  margin: 0 auto;
+    width: 95%;
+    margin: 0 auto;
 }
 
 #banner{
-  margin-top: 1.4em;
+    margin-top: 1.4em;
 }
 
 #banner {
-  float: left;
-  width: 50%;
+    float: left;
+    width: 50%;
 }
 
 img.banner{
-   max-width:100%;
-   max-height:100%;
-   border: 5px solid #333300;
-   border-radius: 0.3em;
+     max-width:100%;
+     max-height:100%;
+     border: 5px solid #333300;
+     border-radius: 0.3em;
 }
 
 #auth-content{
-  float: right;
-  width: 30%;
-  margin-top: 5em;
+    float: right;
+    width: 30%;
+    margin-top: 5em;
 }
 
 #auth-options, #auth-formularios{
@@ -76,7 +76,7 @@ ul#menu li a {
 }
 
 #leftcontainer {
-    width: 20%;
+    width: 18%;
 }
 
 #leftcontainer h4 {
@@ -85,18 +85,24 @@ ul#menu li a {
 }
 
 #middlecontainer {
-    width: 50%;
+    width: 48%;
     margin-bottom: 4em;
 }
 
 #rightcontainer {
-    width: 20%;
+    width: 18%;
 }
 
 #leftcontainer, #middlecontainer, #rightcontainer {
-  position: relative;
-  margin-top: 5em;
-  float: left;
+    position: relative;
+    margin-top: 5em;
+    margin-left: 1em;
+    float: left;
+}
+
+#paginasPersonales {
+    margin-left: 1.2em;
+    width: 92%;
 }
 
 ul#menu li a:hover {

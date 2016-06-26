@@ -1,69 +1,106 @@
 {% extends "index.html" %}
 
+{% block auth-options %}
+    <div id="auth-options">
+        {% if user %}
+            <a href="/accounts/logout/" class="button">Logout</a>
+        {% else %}
+            <a href="/accounts/register/" class="button">Registrate</a>
+            <a href="/accounts/login/" class="button">Login</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block userPageLabel %}
+    {% if user %}
+        <li><a href="/{{ user }}">Pagina de usuario</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block leftcontent %}
+    <h4>Pulse to view the information about the hotele in english</h4>
+    <button type="submit" class="btn btn-link" onclick="window.location.href='/rechargelanguaje/english/{{thatHotel.id}}'">¡Refresh!</button>
+    <h4>Cliquer pour afficher les informations des hotels on francais</h4>
+    <button type="submit" class="btn btn-link" onclick="window.location.href='/rechargelanguaje/french/{{thatHotel.id}}'">¡Refresh!</button>
+{% endblock %}
+
 {% block midcontent %}
-        <div id="central">
-            <div id="hotelcontainer">
-                <h3 class="hotel">Hotel: {{thatHotel.nombreHotel}}</h3>
-                <h4 class="catyest">Categoria: {{thatHotel.categoria}}   Estrellas: {{thatHotel.estrellas}}</h4>
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                        {% for i in arrayNumFotos %}
-                            <li data-target="#myCarousel" data-slide-to="{{ i }}"></li>
-                        {% endfor %}
-                    </ol>
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                      <div class="item active">
-                        <img src="{{firstFoto}}" alt="CU">
+    <style>
+        body{
+            background-color: {{ personalPage.css.colordefondo }};
+            font-size: {{ personalPage.css.tamanioletra }}
+        }
+        #middlecontainer, #rightcontainer, #leftcontainer, a .button{
+            border: {{ personalPage.css.grosormarcos }} solid {{ personalPage.css.colormarcos }};
+        }
+    </style>
+    <div id="central">
+        <div id="hotelcontainer">
+            <h3 class="hotel">Hotel: {{thatHotel.nombreHotel}}</h3>
+            <h4 class="catyest">Categoria: {{thatHotel.categoria}}   Estrellas: {{thatHotel.estrellas}}</h4>
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    {% for i in arrayNumFotos %}
+                        <li data-target="#myCarousel" data-slide-to="{{ i }}"></li>
+                    {% endfor %}
+                </ol>
+                  <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                  <div class="item active">
+                    <img src="{{firstFoto}}" alt="CU">
+                  </div>
+                  {% for fotohotel in arrayFotos %}
+                      <div class="item">
+                          <img src="{{fotohotel}}" alt="Chania">
                       </div>
-                      {% for fotohotel in arrayFotos %}
-                          <div class="item">
-                              <img src="{{fotohotel}}" alt="Chania">
-                          </div>
-                      {% endfor %}
-                    </div>
-
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                      <span class="sr-only">Next</span>
-                    </a>
+                  {% endfor %}
                 </div>
-                <h3 class="hotel">{{thatHotel.nombreHotel}}</h3>
-                <h4 class="phone">Telefono: {{thatHotel.telefono}}</h4>
-                <h4 class="web">WEB: <a href="{{thatHotel.webUrl}}">{{thatHotel.webUrl}}</a></h4>
-                <h4 class="direccion">Direccion: {{thatHotel.direccion}}</h4>
-                <h4 class="coordenadas">Coordenadas: {{thatHotel.latitude}},{{thatHotel.longitude}}</h4>
-                <h4 class="email">Email: {{thatHotel.email}}</h4>
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+            </div>
+            <h3 class="hotel">{{thatHotel.nombreHotel}}</h3>
+            <h4 class="phone">Telefono: {{thatHotel.telefono}}</h4>
+            <h4 class="web">WEB: <a href="{{thatHotel.webUrl}}">{{thatHotel.webUrl}}</a></h4>
+            <h4 class="direccion">Direccion: {{thatHotel.direccion}}</h4>
+            <h4 class="coordenadas">Coordenadas: {{thatHotel.latitude}},{{thatHotel.longitude}}</h4>
+            <h4 class="email">Email: {{thatHotel.email}}</h4>
+            {% if changelenguaje == False %}
                 <h4 class="descripcion"></h4>
                 <script>
                     $(".descripcion").html("Descripcion: {{thatHotel.descripcion}}");
                 </script>
-                <h3 class="comentarios">Comentarios de los usuarios para este hotel</h3>
-                {% for elemento in comentarios %}
-                    <h4>Comentario de: {{ elemento.user }} a {{ elemento.date }}</h4>
-                    <h5>{{ elemento.contenido }}
-                {% endfor %}
-            </div>
+            {% else %}
+                <h4 class="descripcion">{{contenidocambiado}}</h4>
+            {% endif %}
+            <h3 class="comentarios">Comentarios de los usuarios para este hotel</h3>
+            {% for elemento in comentarios %}
+                <h4>Comentario de: {{ elemento.user }} a {{ elemento.date }}</h4>
+                <h5>{{ elemento.contenido }}
+            {% endfor %}
         </div>
+    </div>
 {% endblock %}
 
 {% block rightcontainer %}
     <h4>¡Añade este fantástico hotel a tu colección!</h4>
-    <button type="submit" class="btn btn-link" onclick="window.location.href='/addhotel/{{thatHotel.id}}'">Añadir {{thatHotel.nombreHotel}}</button>
+    <button type="submit" class="btn btn-link" onclick="window.location.href='/addHotel/{{thatHotel.id}}'">Añadir {{thatHotel.nombreHotel}}</button>
 
     <h4>Añade un comentario al hotel</h4>
     <form action="/alojamientos/{{thatHotel.id}}" method="post">
         {% csrf_token %}
-        <label for="addcomment">Pon aquí tu comenario: </label>
-        <input id="addcomment" type="text" name="addcomment" value="Un solo comentario por usuario y por hotel">
+        <label for="addcomment">Pon aquí tu comentario: </label>
+        <h6>Un solo comentario por usuario para cada hotel es permitido)</h6>
+        <input id="addcomment" type="text" name="addcomment" value="">
         <input type="submit" value="Enviar">
     </form>
 {% endblock %}

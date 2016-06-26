@@ -18,6 +18,7 @@ class Hotel (models.Model):
     categoria = models.CharField(max_length=200, default="")
     estrellas = models.CharField(max_length=200, default="")
     firstFoto = models.CharField(max_length=200, default="")
+    numcomentarios = models.IntegerField(default=0)
 
 class Comentario (models.Model):
     user = models.CharField(max_length=200, default="")

@@ -15,15 +15,6 @@
 </head>
 
 <body>
-    <style>
-        body{
-            background-color: {{ personalPage.css.colordefondo }};
-            font-size: {{ personalPage.css.tamanioletra }}
-        }
-        #banner, #leftcontainer, #middlecontainer, #rightcontainer{
-            border: {{ personalPage.css.grosormarcos }} solid {{ personalPage.css.colormarcos }};
-        }
-    </style>
 
 		<div id="contenedor">
 
@@ -45,8 +36,8 @@
             <li><a href="/">Inicio</a></li>
             {% block userPageLabel %}
             {% endblock %}
-            <li><a href="alojamientos">Alojamientos disponibles</a></li>
-            <li><a href="about">About</a></li>
+            <li><a href="/alojamientos">Alojamientos disponibles</a></li>
+            <li><a href="/about">About</a></li>
   			</ul>
 
         <div id=leftcontainer>

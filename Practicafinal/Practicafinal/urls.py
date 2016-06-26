@@ -24,17 +24,16 @@ urlpatterns = [
     url(r'^alojamientos/(\d+)$', 'Hoteles.views.elalojamiento', name='elalojamiento'),
     url(r'^admin', include(admin.site.urls)),
     url(r'^about$', 'Hoteles.views.about'),
-
-    #url(r'^(.*)$', 'Hoteles.views.usuario'),
-
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name='logout'),
     url(r'^accounts/loggedin/$', 'Hoteles.views.loggedin', name='loggedin'),
     url(r'^accounts/register/$', 'Hoteles.views.register', name='register'),
     url(r'^accounts/register/complete/$', 'Hoteles.views.registration_complete', name='registration_complete'),
     url(r'^XMLlinks$', 'Hoteles.views.XMLlinks', name='XMLlinks'),
-    url(r'^addhotel/(\d+)$', 'Hoteles.views.addhotel',name="addhotel"),
+    url(r'^addHotel/(\d+)$', 'Hoteles.views.addHotel',name="addhotel"),
     url(r'^rechargelang/$', 'Hoteles.views.rechargelang', name='rechargelang'),
-    url(r'^(.*)$', 'Hoteles.views.user_profile', name='user_profile'),
+    url(r'^rechargelanguaje/(.*)/(\d+)$', 'Hoteles.views.rechargelanguaje', name='rechargelang'),
     url(r'^(.*)/xml$', 'Hoteles.views.user_XML', name='user_XML'),
+    url(r'^(.*)$', 'Hoteles.views.user_profile', name='user_profile'),
+
 ]

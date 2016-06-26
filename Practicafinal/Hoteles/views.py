@@ -19,6 +19,8 @@ from models import PersonalPage
 
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
+
+import xml.etree.ElementTree as ET
 from loadit import myContentHandler
 
 import urllib2
@@ -34,27 +36,28 @@ import urllib2
 #<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-multiselect/bootstrap-multiselect.css' %}" />
 #<script language="JavaScript" type="text/javascript" src="{% static 'bootstrap-multiselect/bootstrap-multiselect.js' %}"></script>
 
-
 # Create your views here.
 def principal(request):
     if request.method == "GET":
         username = None
         try:
-            listaHoteles = Hotel.objects.all()
+            listaHoteles = Hotel.objects.all().order_by('-numcomentarios')
+            print listaHoteles[0].numcomentarios
         except Hotel.DoesNotExist:
             print "No hay hoteles en la base de datos"
             listaHoteles = {}
+        try:
+            personalPages = PersonalPage.objects.all()
+        except PersonalPage.DoesNotExist:
+            print "No existe aun paginas personales. No debe haber usuarios registrados"
+            personalPages = {}
         if request.user.is_authenticated():
             username=request.user.username
-            try:
-                personalPages = PersonalPage.objects.all()
-            except PersonalPage.DoesNotExist:
-                print "No existe aun paginas personales. No debe haber usuarios registrados"
-                personalPages = {}
             context = {'user': username, 'personalPages': personalPages, 'listaHoteles': listaHoteles[0:10]}
             return render_to_response('principal.html', context, context_instance = RequestContext(request))
         else:
-            context = {'listaHoteles': listaHoteles[0:10]}
+            username = False
+            context = {'user':username, 'personalPages': personalPages,'listaHoteles': listaHoteles[0:10]}
             return render_to_response('principal.html', context, context_instance = RequestContext(request))
     else:
         return HttpResponse(get_template('error404NotFound.html').render())
@@ -82,20 +85,22 @@ def user_profile(request, usuario):
     if request.method == "GET":
         username = None
         try:
-            personalHotel = PersonalHotel.objects.get(user=usuario)
+            personalPage = PersonalPage.objects.get(user=usuario)
+        except PersonalPage.DoesNotExist:
+            print "El usuario aun se habra logueado ni registrado"
+            personalPage = {}
+        try:
+            personalHotel = PersonalHotel.objects.filter(user=usuario)
         except PersonalHotel.DoesNotExist:
             print "Aun no hay hoteles seleccionados para este usuario"
             personalHotel = {}
         if request.user.is_authenticated():
             username = request.user.username
-            #Siempre existira nuestra pagina personal si estamos logueados
-            personalPage = PersonalPage.objects.get(user=username)
             context = {'user': username, 'personalPage': personalPage, 'personalHotel': personalHotel}
             return render_to_response('user_profile.html', context, context_instance = RequestContext(request))
         else:
-            #Siempre existira nuestra pagina personal si estamos logueados
-            personalPage = PersonalPage.objects.get(user=username)
-            context = {'personalPage': personalPage, 'personalHotel': personalHotel}
+            username = False
+            context = {'user': username, 'personalPage': personalPage, 'personalHotel': personalHotel}
             return render_to_response('user_profile.html', context, context_instance = RequestContext(request))
     elif request.method == 'POST':
         marcossize = request.POST.getlist("marcossize")
@@ -117,7 +122,7 @@ def user_profile(request, usuario):
         personalPage.css.save()
         personalPage.save()
         try:
-            personalHotel = PersonalHotel.objects.get(user=usuario)
+            personalHotel = PersonalHotel.objects.filter(user=usuario)
         except PersonalHotel.DoesNotExist:
             personalHotel = {}
         context = {'user': username, 'personalPage': personalPage, 'personalHotel':personalHotel}
@@ -133,13 +138,72 @@ def rechargelang(request):
     theParser.parse(fil)
     return HttpResponseRedirect("alojamientos")
 
+def rechargelanguaje(request, idioma, id):
+    if idioma == "english":
+        fil = urllib2.urlopen( 'http://cursosweb.github.io/etc/alojamientos_en.xml')
+    elif idioma == "french":
+        fil = urllib2.urlopen( 'http://cursosweb.github.io/etc/alojamientos_fr.xml')
+
+    tree = ET.parse(fil)
+    root = tree.getroot()
+    try:
+        hotel=Hotel.objects.get(id=id)
+        found = False
+        contenidocambiado = ""
+        for child in root.iter('basicData'):
+            nombreHotel = child.find('name').text
+            if nombreHotel == hotel.nombreHotel:
+                found = True
+                contenidocambiado = "Descripcion: "
+                contenidocambiado = contenidocambiado + child.find('body').text
+                break;
+        thatHotel = Hotel.objects.all().filter(id=id)
+        arrayNumFotos = range(1,thatHotel[0].imageNum)
+        auxStrFotos = str(thatHotel[0].imageUrls)
+        auxStrFotos = auxStrFotos.replace("[","")
+        auxStrFotos = auxStrFotos.replace("]","")
+        auxStrFotos = auxStrFotos.replace("'","")
+        auxStrFotos = auxStrFotos.strip()
+        arrayFotos = auxStrFotos.split(",")
+        for i in range(len(arrayFotos)):
+            arrayFotos[i]= arrayFotos[i].replace("u","",1)
+        firstFoto = arrayFotos.pop(0)
+        try:
+            personalPages = PersonalPage.objects.all()
+        except PersonalPage.DoesNotExist:
+            print "No existe aun paginas personales. No debe haber usuarios registrados"
+            personalPages = {}
+        try:
+            comentarios = Comentario.objects.filter(idhotel=id)
+        except Comentario.DoesNotExist:
+            comentarios = {}
+        if request.user.is_authenticated():
+            username=request.user.username
+            context = {'user': username, 'personalPages': personalPages,'thatHotel': thatHotel[0], 'arrayNumFotos': arrayNumFotos,
+                    'firstFoto': firstFoto, 'arrayFotos': arrayFotos, 'comentarios': comentarios,
+                    'changelenguaje': True, 'contenidocambiado': contenidocambiado}
+            return render_to_response('elalojamiento.html', context, context_instance = RequestContext(request))
+        context = {'personalPages': personalPages,'thatHotel': thatHotel[0], 'arrayNumFotos': arrayNumFotos,
+                'firstFoto': firstFoto, 'arrayFotos': arrayFotos, 'comentarios': comentarios,
+                'changelenguaje': True, 'contenidocambiado': contenidocambiado}
+        return render_to_response('elalojamiento.html', context, context_instance = RequestContext(request))
+    except Hotel.DoesNotExist:
+        print "El hotel no esta en la base de datos"
+        return HttpResponseRedirect("principal")
 
 def alojamientos(request):
     if request.method == 'GET':
         listaHoteles = Hotel.objects.all()
         numHoteles = len(listaHoteles)
-        context = {'listaHoteles': listaHoteles, 'numHoteles': numHoteles}
-        return render_to_response('alojamientos.html', context, context_instance = RequestContext(request))
+        username = None
+        if request.user.is_authenticated():
+            username = request.user.username
+            context = {'user': username,'listaHoteles': listaHoteles, 'numHoteles': numHoteles}
+            return render_to_response('alojamientos.html', context, context_instance = RequestContext(request))
+        else:
+            username = False
+            context = {'user': username,'listaHoteles': listaHoteles, 'numHoteles': numHoteles}
+            return render_to_response('alojamientos.html', context, context_instance = RequestContext(request))
 
     elif request.method == 'POST':
         listaOpcionesFiltro = request.POST.getlist("multiple")
@@ -177,33 +241,65 @@ def elalojamiento(request, id):
         for i in range(len(arrayFotos)):
             arrayFotos[i]= arrayFotos[i].replace("u","",1)
         firstFoto = arrayFotos.pop(0)
+        try:
+            personalPages = PersonalPage.objects.all()
+        except PersonalPage.DoesNotExist:
+            print "No existe aun paginas personales. No debe haber usuarios registrados"
+            personalPages = {}
+        try:
+            comentarios = Comentario.objects.filter(idhotel=id)
+        except Comentario.DoesNotExist:
+            comentarios = {}
         if request.user.is_authenticated():
             username=request.user.username
-            try:
-                personalPages = PersonalPage.objects.all()
-            except PersonalPage.DoesNotExist:
-                print "No existe aun paginas personales. No debe haber usuarios registrados"
-                personalPages = {}
-            try:
-                comentarios = Comentario.objects.get(idhotel=id)
-            except Comentario.DoesNotExist:
-                comentarios = {}
             context = {'user': username, 'personalPages': personalPages,'thatHotel': thatHotel[0], 'arrayNumFotos': arrayNumFotos,
-                    'firstFoto': firstFoto, 'arrayFotos': arrayFotos, 'comentarios': comentarios}
+                    'firstFoto': firstFoto, 'arrayFotos': arrayFotos, 'comentarios': comentarios,
+                    'changelenguaje': False}
             return render_to_response('elalojamiento.html', context, context_instance = RequestContext(request))
-        context = {'user': username, 'personalPages': personalPages,'thatHotel': thatHotel[0], 'arrayNumFotos': arrayNumFotos,
-                'firstFoto': firstFoto, 'arrayFotos': arrayFotos, 'comentarios': comentarios}
+        context = {'personalPages': personalPages,'thatHotel': thatHotel[0], 'arrayNumFotos': arrayNumFotos,
+                'firstFoto': firstFoto, 'arrayFotos': arrayFotos, 'comentarios': comentarios,
+                'changelenguaje': False}
         return render_to_response('elalojamiento.html', context, context_instance = RequestContext(request))
     elif request.method == 'POST':
         if request.user.is_authenticated():
             #Enviar un comentario
             comentario = request.POST.get("addcomment")
+            print "Comentario: ", comentario
             username = request.user.username
-            thatHotel = Hotel.objects.get(id=id)
             date = datetime.now()
-            nuevoComentario = Comentario(idhotel=id, user=username, contenido=comentario, date=date)
-            nuevoComentario.save(request)
-        return HttpResponseRedirect("elalojamiento/"+id)
+            try:
+                comentarios = Comentario.objects.get(idhotel=id, user=username)
+                comentarios.contenido = comentario
+                comentarios.date = date
+                comentarios.save()
+            except Comentario.DoesNotExist:
+                nuevoComentario = Comentario(idhotel=id, user=username, contenido=comentario, date=date)
+                nuevoComentario.save(request)
+            #
+        return HttpResponseRedirect("/alojamientos")
+
+def addHotel(request, id):
+    if request.user.is_authenticated():
+        username=request.user.username
+        date = datetime.now()
+        thatHotel = Hotel.objects.get(id=id)
+        print "Join0 "
+        #Comprobamos que no este aniadido ya el hotel a nuestra lista personal
+        try:
+            #Modificamos la fecha de aniadido
+            print "Join1 "
+            listaHoteles = PersonalHotel.objects.get(user=username, hotel=thatHotel)
+            #listaHoteles.date = date
+            #listaHoteles.save(request)
+        except PersonalHotel.DoesNotExist:
+            #Lo aniadimos
+            print "Join2 "
+            nuevoHotelPersonal = PersonalHotel(user=username, hotel=thatHotel, date=date)
+            nuevoHotelPersonal.save(request)
+    else:
+        print "Hay un problema, aqui no deberia ni llegar"
+        return HttpResponseBadRequest("/")
+    return HttpResponseRedirect("/"+username)
 
 def user_XML(request, usuario):
     return HttpResponse("user_XML")
@@ -241,6 +337,61 @@ def register(request):
 
 def registration_complete(request):
     return render_to_response('registration/registration_complete.html')
+
+def user_XML(request, usuario):
+    try:
+        personalHotel = PersonalHotel.objects.filter(user=usuario)
+        xmltext = ""
+        xmltext = '<?xml version="1.0" encoding="UTF-8"?>\n'
+        xmltext += '<serviceList>'
+        for thatHotel in personalHotel:
+            xmltext += '<service fechaActualizacion="' +str(datetime.now())+ '">'
+            xmltext += "<basicData>"
+            xmltext += "<language>es</language>"
+            xmltext += '<name>"' +thatHotel.hotel.nombreHotel+ '"</name>'
+            xmltext += '<email>"' +thatHotel.hotel.email+ '"</email>'
+            xmltext += '<phone>"' +thatHotel.hotel.telefono+ '"</phone>'
+            xmltext += '<title>"' +thatHotel.hotel.nombreHotel+ '"></title>'
+            xmltext += '<web>"' +thatHotel.hotel.nombreHotel+ '"></web>'
+            xmltext += "</basicData>"
+            xmltext += "<geoData>"
+            xmltext += '<adress>"' +thatHotel.hotel.direccion+ '"></adress>'
+            xmltext += '<web>"' +thatHotel.hotel.nombreHotel+ '"></web>'
+            xmltext += "<locality/>"
+            xmltext += "<country>Spain</country>"
+            xmltext += '<latitude>"' +thatHotel.hotel.latitude+ '"></latitude>'
+            xmltext += '<longitude>"' +thatHotel.hotel.longitude+ '"></longitude>'
+            xmltext += "</geoData>"
+            xmltext += "<multimedia>"
+            auxStrFotos = str(thatHotel.hotel.imageUrls)
+            auxStrFotos = auxStrFotos.replace("[","")
+            auxStrFotos = auxStrFotos.replace("]","")
+            auxStrFotos = auxStrFotos.replace("'","")
+            auxStrFotos = auxStrFotos.strip()
+            arrayFotos = auxStrFotos.split(",")
+            for u in range(len(arrayFotos)):
+                arrayFotos[u]= arrayFotos[u].replace("u","",1)
+            for image in arrayFotos:
+                xmltext += '<media type="image"><description/><url>' +image+ "</url></media>"
+            xmltext += "</multimedia>"
+            xmltext += "<extradata>"
+            xmltext += "<categoria>"
+            xmltext += '<item name="Tipo">' +thatHotel.hotel.categoria+ "</item>"
+            xmltext += "<subcategoria>"
+            xmltext += '<item name="Subcategoria">' +thatHotel.hotel.estrellas+ '"></item>'
+            xmltext += '<longitude>"' +thatHotel.hotel.longitude+ '"></longitude>'
+            xmltext += '<longitude>"' +thatHotel.hotel.longitude+ '"></longitude>'
+            xmltext += '<longitude>"' +thatHotel.hotel.longitude+ '"></longitude>'
+            xmltext += "</subcategoria>"
+            xmltext += "</categoria>"
+            xmltext += "</extradata>"
+            xmltext += "</service>"
+            xmltext += "</serviceList>"
+            context = {'xmltext': xmltext}
+            return HttpResponse(xmltext, content_type='text/xml')
+    except PersonalHotel.DoesNotExist:
+        print "No existe XML para ese usuario"
+        return HttpResponseRedirect("principal")
 
 def XMLlinks(request):
     return render_to_response('XMLlinks.html')

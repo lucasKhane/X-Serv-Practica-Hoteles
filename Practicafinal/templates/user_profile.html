@@ -12,12 +12,26 @@
 {% endblock %}
 
 {% block userPageLabel %}
-    <li><a href="{{ user }}">Pagina de usuario</a></li>
+    {% if user %}
+        <li><a href="/{{ user }}">Pagina de usuario</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block leftcontent %}
+    <style>
+        body{
+            background-color: {{ personalPage.css.colordefondo }};
+            font-size: {{ personalPage.css.tamanioletra }}
+        }
+        #middlecontainer, #leftcontainer, a .button{
+            border: {{ personalPage.css.grosormarcos }} solid {{ personalPage.css.colormarcos }};
+        }
+        #rightcontainer{
+            border: 0;
+        }
+    </style>
     {% if user %}
-        <h4>Pulsa para recargar la informacón de los hoteles</h4>
+        <h4>Pulsa para recargar la información de los hoteles</h4>
         <button type="submit" class="btn btn-link" onclick="window.location.href='/rechargelang/'">¡Refresh!</button>
         {{personalPage.colordefondo}}
         <h4>Cambiar estilo de la pagina</h4>
@@ -106,6 +120,18 @@
 {% endblock %}
 
 {% block midcontent %}
-    <h3 style="text-decoration: underline; margin-bottom: 1em">{{ personalPage.tittlePage }}
-
+    <h3 style="text-decoration: underline; margin-bottom: 1em">{{ personalPageRequest.tittlePage }}
+    <div id="central">
+        <div id="hotelcontainer">
+            <h4 style="text-decoration: underline" class="hotel">Estos son 10 hoteles seleccionados por el usuario</h4>
+            {% for elemento in personalHotel %}
+                <h3 style="text-decoration: underline" class="hotel">{{elemento.hotel.nombreHotel}} - {{elemento.date}}</h3>
+                <h4 class="direccion">Direccion: {{elemento.hotel.direccion}}</h4>
+                <div class="item">
+                    <img src="{{elemento.hotel.firstFoto}}" alt="NO HAY FOTO">
+                </div>
+                <h5 class="web">WEB: <a href="{{thatHotel.webUrl}}">{{elemento.hotel.webUrl}}</a></h5>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

@@ -42,7 +42,7 @@ class myContentHandler(ContentHandler):
 
         if name == 'basicData':
             self.record = Hotel(nombreHotel="",email="",telefono="", descripcion="",webUrl="",direccion="",latitude="",
-                                longitude="",imageNum=0,imageUrls=[],categoria="",estrellas="",firstFoto="")
+                                longitude="",imageNum=0,imageUrls=[],categoria="",estrellas="",firstFoto="", numcomentarios=0)
 
         if name == "item":
             if attrs['name'] == "Categoria":
