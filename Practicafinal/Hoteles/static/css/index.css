@@ -2,7 +2,7 @@ body {
     background: #ccffff;
 }
 
-#contenedor, #banner, #auth-content, #auth-options, #auth-formularios, #menu, #leftcontainer, #middlecontainer{
+#contenedor, #banner, #auth-content, #auth-options, #auth-formularios, #menu, #leftcontainer, #middlecontainer, #rightcontainer{
     border: 2px solid #777;
 }
 
@@ -86,17 +86,25 @@ ul#menu li a {
 
 #middlecontainer {
     width: 50%;
+    margin-bottom: 4em;
 }
 
-#leftcontainer, #middlecontainer {
+#rightcontainer {
+    width: 20%;
+}
+
+#leftcontainer, #middlecontainer, #rightcontainer {
   position: relative;
   margin-top: 5em;
   float: left;
 }
 
-
-
-
 ul#menu li a:hover {
     background-color: orange;
+}
+
+h3.comentarios {
+  text-decoration: underline;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }

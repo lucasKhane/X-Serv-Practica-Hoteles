@@ -1,11 +1,111 @@
 {% extends "index.html" %}
-{% block title %}Pagina personal de usuario{% endblock %}
+
+{% block auth-options %}
+    <div id="auth-options">
+        {% if user %}
+            <a href="/accounts/logout/" class="button">Logout</a>
+        {% else %}
+            <a href="/accounts/register/" class="button">Registrate</a>
+            <a href="/accounts/login/" class="button">Login</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block userPageLabel %}
+    <li><a href="{{ user }}">Pagina de usuario</a></li>
+{% endblock %}
 
 {% block leftcontent %}
-    <h4>Pulsa para recargar la informacón de los hoteles</h4>
-    <button type="submit" class="btn btn-link" onclick="window.location.href='/rechargelang/'">¡Refresh!</button>
+    {% if user %}
+        <h4>Pulsa para recargar la informacón de los hoteles</h4>
+        <button type="submit" class="btn btn-link" onclick="window.location.href='/rechargelang/'">¡Refresh!</button>
+        {{personalPage.colordefondo}}
+        <h4>Cambiar estilo de la pagina</h4>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <select name="marcossize" id="marcossize" size="6">
+                <optgroup label="grosor">
+                    <option value="0.3em">0.3em</option>
+                    <option value="0.5em">0.5em</option>
+                    <option value="1em">1em</option>
+                    <option value="1.5em">1.5em</option>
+                    <option value="2em">2em</option>
+                    <option value="2.5em">2.5em</option>
+                </optgroup>
+            </select>
+            <input class"submitbutton" type="submit" value="¡Cambialo!">
+        </form>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <select name="marcoscolor" id="marcoscolor" size="6">
+                <optgroup label="Color">
+                    <option value="#000000">Negro</option>
+                    <option value="#FF0000">Rojo</option>
+                    <option value="#00FF00">Verde</option>
+                    <option value="#0000FF">Azul</option>
+                    <option value="#FFFF00">Amarillo</option>
+                    <option value="#00FFFF">Azul clarito</option>
+                    <option value="#FF00FF">Morado raro</option>
+                    <option value="#C0C0C0">Gris</option>
+                    <option value="#FFFFFF">Blanco</option>
+                </optgroup>
+            </select>
+            <input class"submitbutton" type="submit" value="¡Cambialo!">
+        </form>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <select name="tamanioletra" id="tamanioletra" size="6">
+                <optgroup label="letra">
+                    <option value="xx-small">xx-small</option>
+                    <option value="x-small">x-small</option>
+                    <option value="small">small</option>
+                    <option value="medium">medium</option>
+                    <option value="large">large</option>
+                    <option value="x-large">x-large</option>
+                    <option value="xx-large">xx-large</option>
+                </optgroup>
+            </select>
+            <input class"submitbutton" type="submit" value="¡Cambialo!">
+        </form>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <select name="colorfondo" id="colorfondo" size="6">
+                <optgroup label="fondo">
+                    <option value="#e6ffff">Color por defecto</option>
+                    <option value="#ccffcc">Como verdosillo</option>
+                    <option value="#ffcc99">Helado con de naranja con poca naranja</option>
+                    <option value="#66ff99">Color lagarto</option>
+                    <option value="#9999ff">Un azul muy triste</option>
+                    <option value="#ccff33">Color lima-limon</option>
+                </optgroup>
+            </select>
+            <input class"submitbutton" type="submit" value="¡Cambialo!">
+        </form>
+
+        <script>
+            $(document).ready(function() {
+                $("#marcossize").multiselect({
+                    nonSelectedText: 'Cambia el tamaño de los bordes',
+                    disableIfEmpty: true
+                });
+                $("#marcoscolor").multiselect({
+                    nonSelectedText: 'Cambia el color de los bordes',
+                    disableIfEmpty: true
+                });
+                $("#colorfondo").multiselect({
+                    nonSelectedText: 'Cambia el color de fondo',
+                    disableIfEmpty: true
+                });
+                $("#tamanioletra").multiselect({
+                    nonSelectedText: '¿Letra demasiado pequeña? No problem!',
+                    disableIfEmpty: true
+                });
+            });
+        </script>
+    {% endif %}
 {% endblock %}
 
 {% block midcontent %}
-    <h1>Welcome {{ user }}</h1>
+    <h3 style="text-decoration: underline; margin-bottom: 1em">{{ personalPage.tittlePage }}
+
 {% endblock %}

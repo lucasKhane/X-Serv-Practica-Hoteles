@@ -25,6 +25,7 @@ class myContentHandler(ContentHandler):
         self.longitude = ""
         self.imageNum = 0
         self.imageUrls = []
+        self.firstFoto = ""
         #categoria y estrellas
         self.tipo = ""
 
@@ -40,7 +41,8 @@ class myContentHandler(ContentHandler):
         self.tag = name
 
         if name == 'basicData':
-            self.record = Hotel(nombreHotel="",email="",telefono="", descripcion="",webUrl="",direccion="",latitude="",longitude="",imageNum=0,imageUrls=[],categoria="",estrellas="")
+            self.record = Hotel(nombreHotel="",email="",telefono="", descripcion="",webUrl="",direccion="",latitude="",
+                                longitude="",imageNum=0,imageUrls=[],categoria="",estrellas="",firstFoto="")
 
         if name == "item":
             if attrs['name'] == "Categoria":
@@ -89,6 +91,8 @@ class myContentHandler(ContentHandler):
 
         if self.tag == 'url' and self.tiene_imagenes:
             #print "contador: ", self.contador, self.imageUrls
+            if self.record.firstFoto == "":
+                self.record.firstFoto = self.imageUrls
             self.record.imageUrls.append(self.imageUrls)
             self.record.imageNum = self.record.imageNum + 1
             self.record.save()

@@ -15,6 +15,16 @@
 </head>
 
 <body>
+    <style>
+        body{
+            background-color: {{ personalPage.css.colordefondo }};
+            font-size: {{ personalPage.css.tamanioletra }}
+        }
+        #banner, #leftcontainer, #middlecontainer, #rightcontainer{
+            border: {{ personalPage.css.grosormarcos }} solid {{ personalPage.css.colormarcos }};
+        }
+    </style>
+
 		<div id="contenedor">
 
         <div id="banner">
@@ -23,14 +33,8 @@
         </div>
 
         <div id=auth-content>
-      			<div id="auth-options">
-                {% if user %}
-                    <a href="/accounts/logout/" class="button">Logout</a>
-                {% else %}
-                    <a href="/accounts/register/" class="button">Registrate</a>
-                    <a href="/accounts/login/" class="button">Login</a>
-                {% endif %}
-            </div>
+            {% block auth-options %}
+            {% endblock %}
             <div id="auth-formularios">
                 {% block content %}
                 {% endblock %}
@@ -39,11 +43,8 @@
 
   			<ul id="menu">
             <li><a href="/">Inicio</a></li>
-            {% if user %}
-                <li><a href="{{ user }}">Pagina de usuario</a></li>
-            {% else %}
-                <li><a href="/login/">Pagina de usuario</a></li>
-            {% endif %}
+            {% block userPageLabel %}
+            {% endblock %}
             <li><a href="alojamientos">Alojamientos disponibles</a></li>
             <li><a href="about">About</a></li>
   			</ul>
@@ -55,6 +56,11 @@
 
         <div id=middlecontainer>
             {% block midcontent %}
+            {% endblock %}
+        </div>
+
+        <div id=rightcontainer>
+            {% block rightcontainer %}
             {% endblock %}
         </div>
 

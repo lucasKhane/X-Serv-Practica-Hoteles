@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <head>
+      {% load staticfiles %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
+      <link rel="stylesheet" type="text/css" href="{% static 'jquery/jquery-ui.css' %}" />
+      <script language="JavaScript" type="text/javascript" src="{% static 'jquery/jquery.js' %}"></script>
+      <script language="JavaScript" type="text/javascript" src="{% static 'jquery/jquery-ui.js' %}"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+
+  </head>
+</head>
+
+<body>
+    <button type="submit" class="btn btn-link" onclick="window.location.href='index.html'">Volver a la página</button>
+
+    <ul><h3>Vamos a explicar el funcionamiento de esta pagina web</h3>
+        <li><h4>Se trata de una aplicación construida simulando el funcionamiento de una pagina real de gestión de alojamientos.
+        Vamos a explicar los diferentes apartados y opciones que se han implementado:
+        La página web dispone de varias plantillas.</h4></li>
+    </ul>
+    <ul><h3>Información general sobre las plantillas</h3>
+        <h4>La plantilla base cuenta con un elemento banner en lo alto de la página. Un menú de opciones para acceder a algunos de los recursos básicos
+        de la web, y un <b>footer</b> como pie de página el cual está <b>fijado</b> para que esté siempre visible en el inferior de la página,
+        aunque el contenido de esta sobrepase las dimensiones de visualización o el contenido no llegue a completar la página, y este pie de página
+        se quede a la mitad, lo cual es bastante feo.
+        Decir también que <b>no todos</b> los elementos de la página son visibles. Para algunos hace falta estar registrado y logueado, y para otros
+        se el autor del contenido.
+        Con la pestaña <b>Inicio</b> siempre retornaremos a la página principal.
+        Con la pestaña <b>Página de usuario</b>(la cual solo veremos si estamos registrados), podremos acceder a nuestra página de usuario personal
+        y poder acceder a algunas opciones.
+        En la pestaña <b>Alojamientos disponibles</b> podremos acceder a una lista de todos los hoteles de nuestra base de datos.
+        Y en la pestaña <b>About</b>, podremos acceder a este about.
+        También tenemos a la derecha en la esquina superior botones de <b>login</b>, <b>register</b> y <b>Logout</b></h4>
+    </ul>
+    <ul><h3>Diferentes recursos ofrecidos por la aplicación:</h3>
+        <li><h4>La página principal, muestra información sobre los 10 hoteles con más comentarios. Y un listado con todas las páginas personales de los
+        usuarios, para poder acceder a ellas y a algunas de las opciones y hoteles que han seleccionado los usuarios.</h4></li>
+        <li><h4>Dentro de nuestra paǵina de usuario, podremos ver una lista de 10 hoteles seleccionados por nosotros, y podremos recorrer todos aquellos
+        que hallamos seleccionado, pero que no se puedan mostrar.
+        También tenemos un pequeño formulario para poder cambiar algunas opciones personales de nuestra página.
+        Tenemos además un botón de <b>refresh</b> para recargar los hoteles en nuestra base de datos.</h4></li>
+        <li><h4>En <b>En alojamientos disponibles</b> tenemos una lista de todos los hoteles de nuestra pase de datos, y tenemos algunas opciones para poder
+        filtrar por requisitos.</h4></li>
+        <li><h4>Si accedemos al hotel, entraremos en la página del hotel y obtendremos una descripción más detallada. Además que podremos añadir el
+        hotel a nuestra lista personal.</h4></li>
+        <li><h4>Si en el <b>Pie de página</b> clickeamos en <b>glyphicon</b> obtendremos información detallada de donde recopila la información la aplicación
+        para su base de datos.</h4></li>
+    </ul>
+    <ul><h3>Agradecimientos:</h3>
+        <li><h4><b>¡Muchas gracias y espero que sea del agrado, porque le he dedicado un montón de tiempo!</b></h4></li>
+    </ul>
+
+    <div class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+            <p class="navbar-text pull-left">© 2016 - Site Built By Daniel Rodríguez.</p>
+            <p class="navbar-text pull-left">“Esta aplicación utiliza datos del portal de datos abiertos de la ciudad de Madrid”</p>
+
+            <a href="XMLlinks" class="navbar-btn btn-danger btn pull-right">
+            <span class="glyphicon glyphicon-pushpin"></span>  See information XML links</a>
+        </div>
+    </div>
+</body>
+</html>

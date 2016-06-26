@@ -26,8 +26,9 @@
 
     <script>
         $(document).ready(function() {
-            $("select").multiselect({
-
+            $("#multiple").multiselect({
+                nonSelectedText: 'Cambia color y/o tamaño',
+                disableIfEmpty: true,
             });
         });
     </script>
